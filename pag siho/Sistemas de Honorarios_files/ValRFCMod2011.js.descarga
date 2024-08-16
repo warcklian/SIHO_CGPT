@@ -1,0 +1,372 @@
+// JavaScript Document
+//General: todas las funciones retornan un valor boolean
+//Descrip: Válida la Curp comparandola contra los campos con la que se forma y el rfc
+//Param: Controles= curp,rfc,apellido paterno,apellido materno,nombre,sexo[HM],estado[las claves para cada entidad ej. AS,VR]
+function f_valCurpRfc(aTxtCurp,aTxtRfc,aTxtApp,aTxtApm,aTxtNombre,aCboSex)
+{
+    if (f_mascRfc(aTxtRfc)==false)
+    {
+        alert("RFC escritó de manera Incorrecta");
+        aTxtRfc.focus();
+        aTxtRfc.select();
+        return false;
+    }
+		
+    var lsCURP=aTxtCurp.value;
+    var lsRFC=aTxtRfc.value;
+    var lsAPP=aTxtApp.value;
+    var lsAPM=aTxtApm.value;
+    var lsNOM=aTxtNombre.value;
+    //--------------------
+    lsAPP=lsAPP.replace("Á","A");
+    lsAPP=lsAPP.replace("É","E");
+    lsAPP=lsAPP.replace("Í","I");
+    lsAPP=lsAPP.replace("Ó","O");
+    lsAPP=lsAPP.replace("Ú","U");
+    lsAPP=lsAPP.replace("á","a");
+    lsAPP=lsAPP.replace("é","e");
+    lsAPP=lsAPP.replace("í","i");
+    lsAPP=lsAPP.replace("ó","o");
+    lsAPP=lsAPP.replace("ú","u");
+		
+    lsAPM=lsAPM.replace("Á","A");
+    lsAPM=lsAPM.replace("É","E");
+    lsAPM=lsAPM.replace("Í","I");
+    lsAPM=lsAPM.replace("Ó","O");
+    lsAPM=lsAPM.replace("Ú","U");
+    lsAPM=lsAPM.replace("á","a");
+    lsAPM=lsAPM.replace("é","e");
+    lsAPM=lsAPM.replace("í","i");
+    lsAPM=lsAPM.replace("ó","o");
+    lsAPM=lsAPM.replace("ú","u");
+		
+    lsNOM=lsNOM.replace("Á","A");
+    lsNOM=lsNOM.replace("É","E");
+    lsNOM=lsNOM.replace("Í","I");
+    lsNOM=lsNOM.replace("Ó","O");
+    lsNOM=lsNOM.replace("Ú","U");
+    lsNOM=lsNOM.replace("á","a");
+    lsNOM=lsNOM.replace("é","e");
+    lsNOM=lsNOM.replace("í","i");
+    lsNOM=lsNOM.replace("ó","o");
+    lsNOM=lsNOM.replace("ú","u");
+    //--------------------
+		
+    lsCURP=lsCURP.toUpperCase();
+    lsRFC=lsRFC.toUpperCase();
+    lsAPP=lsAPP.toUpperCase();
+    lsAPM=lsAPM.toUpperCase();
+    lsNOM=lsNOM.toUpperCase();
+    lsAPP=lsAPP.replace("Ñ","X");
+    lsAPM=lsAPM.replace("Ñ","X");
+    lsNOM=lsNOM.replace("Ñ","X");
+
+    if (lsAPM=="")
+        lsAPM="XXX";
+    if (lsAPP=="" && lsAPM!="")
+    {
+        lsAPP=lsAPM;
+        lsAPM="XXX";
+    }
+    lsNOM=f_quitaNombreMariaJose(lsNOM);
+    lsAPP=f_quitaPalabrasApellido(lsAPP);
+    lsAPM=f_quitaPalabrasApellido(lsAPM);
+		
+    /*if (f_val10CaracteresRfcCurp(lsCURP,lsRFC,lsAPP,lsAPM,lsNOM)==false){
+        aTxtRfc.focus();
+        aTxtRfc.select();
+        return false;
+    }*/
+    //else{
+    //		var lsDiezLetrasCURP=lsCURP.substring(0,10);
+    //		var lsTresletrasRFC=lsRFC.substring(10,13);
+    //		//aTxtRfc.value=lsDiezLetrasCURP+lsTresletrasRFC;
+    //	}
+    //}else{
+    //	alert("Datos del CURP ó RFC Incorrectos!");
+    //	aTxtCurp.focus();
+    //	aTxtCurp.select();
+    //	return false;
+    //}*/
+    var lsCuatro=lsRFC.substring(0,4);
+    if  (f_Comparar(lsCuatro)==true){
+	alert("Primeros cuatro caracteres del RFC no permitidos por conformar palabra altisonante");   
+	aTxtRfc.focus();
+        aTxtRfc.select();
+	return false;
+    }
+    
+    if (f_compararFechas(lsCURP,lsRFC)==true){}else{
+        alert("Fechas del CURP y RFC no Coinciden");
+        return false;
+    }
+    //valida el resto de los caracteres del RFC
+    if (f_mascHomoclaveRFC(lsRFC)==false){
+        alert("Debe capturar la Homoclave Correcta !");
+        aTxtRfc.focus();
+        aTxtRfc.select();
+        return false;
+    }
+    return true;
+}
+//Descrip: funcion que quita del nombre las palabras María y josé
+//Param: nombre
+function f_quitaNombreMariaJose(asNombre)
+{
+    var lsCompleto=f_quitaPalabrasNombre(asNombre);
+    var lsResuelto="";
+    var lsArrayPalabras=lsCompleto.split(' ');
+    if (lsArrayPalabras.length>1){
+        if ((lsArrayPalabras[0]=="MARIA") || (lsArrayPalabras[0]=="JOSE") || (lsArrayPalabras[0]=="MARÍA") || (lsArrayPalabras[0]=="JOSÉ") || (lsArrayPalabras[0]=="MA") || (lsArrayPalabras[0]=="MA.") || (lsArrayPalabras[0]=="MAC") || (lsArrayPalabras[liI]=="VON")  || (lsArrayPalabras[0]=="VAN"))
+        {
+            lsResuelto=lsArrayPalabras[1];
+					
+        }
+        else{
+            lsResuelto=lsArrayPalabras[0];
+        }
+    }else{
+        lsResuelto=lsArrayPalabras[0];
+    }
+    return lsResuelto;
+}	
+//Descrip: funcion que quita del apellido las preposiciones no permitidas en el nombre
+//Param: Apellido
+function f_quitaPalabrasApellido(asApellido)
+{
+    var lsCompleto=asApellido;
+    var lsResuelto="";
+    var lsArrayPalabras=lsCompleto.split(' ');
+    if (lsArrayPalabras.length>1){
+        for(liI=0;liI<=lsArrayPalabras.length-1;liI++){
+            if ((lsArrayPalabras[liI]=="DE") || (lsArrayPalabras[liI]=="LA") || (lsArrayPalabras[liI]=="LOS") || (lsArrayPalabras[liI]=="DEL") || (lsArrayPalabras[liI]=="LAS") || (lsArrayPalabras[liI]=="Y") || (lsArrayPalabras[liI]=="MAC") || (lsArrayPalabras[liI]=="VAN") || (lsArrayPalabras[liI]=="VON")){}
+            else{
+                lsResuelto+=lsArrayPalabras[liI];
+            }
+        }
+}else{
+    lsResuelto=lsArrayPalabras[0];
+}
+return lsResuelto;
+}
+//Descrip: funcion que quita las preporsiciones del nombre
+//Param: Apellido o nombre
+function f_quitaPalabrasNombre(asApellido)
+{
+    var lsCompleto=asApellido;
+    var lsResuelto="";
+    var lsArrayPalabras=lsCompleto.split(' ');
+    if (lsArrayPalabras.length>1){
+        for(liI=0;liI<=lsArrayPalabras.length-1;liI++){
+            if ((lsArrayPalabras[liI]=="DE") || (lsArrayPalabras[liI]=="LA") || (lsArrayPalabras[liI]=="LOS") || (lsArrayPalabras[liI]=="DEL") || (lsArrayPalabras[liI]=="LAS") || (lsArrayPalabras[liI]=="Y") || (lsArrayPalabras[liI]=="MAC") || (lsArrayPalabras[liI]=="VAN") || (lsArrayPalabras[liI]=="VON")){}
+            else{
+                lsResuelto+=lsArrayPalabras[liI]+' ';
+            }
+        }
+}else{
+    lsResuelto=lsArrayPalabras[0];
+}
+return lsResuelto;
+}
+//descrip: funcion que valida y compara los primeros 10 caracteres del RFC y CURP, comparandolo con el nombre completo
+//Param: Curp,rfc,apellido paterno,apellido materno,nombre
+function f_val10CaracteresRfcCurp(asCURP,asRFC,asAPP,asAPM,asNOM){
+    var lsCuatro=asRFC.substring(0,4);
+    /*var lsContruir4=f_inicial(asAPP)+f_primeraVocalinterna(asAPP)+f_inicial(asAPM)+f_inicial(asNOM);
+    var lbPaso=false;
+    if ( asAPP.length <= 2){//regla 4
+		if ( asRFC != "PIMA640309EW0" )
+        	lsContruir4=f_inicial(asAPP)+f_inicial(asAPM)+asNOM.substring(0,2);
+    }
+    if ( asAPM == "XXX" ){
+        lsContruir4=asAPP.substring(0,2)+asNOM.substring(0,2);
+    }
+    if  (f_Comparar(lsContruir4)==true)
+    {
+        lbPaso=true;
+        if (asRFC.substring(3,4)=="X"){
+            lsContruir4=lsContruir4.substring(0,3)+"X";
+        }else{
+            alert("Cuarta Letra del RFC Incorrecto");
+            return false;
+        }
+			
+    }
+    if ( lsCuatro == lsContruir4 ){}else{
+        alert("Los primeros cuatro caracteres del RFC son incorrectos");
+        return false;
+    } *///Se comenta validación del RFC por que hay muchos casos con excepciones que no aplican las reglas
+		
+    if (f_compararFechas(asCURP,asRFC)==true){}else{
+        alert("Fechas del CURP y RFC no Coinciden");
+        return false;
+    }
+    return true;
+}
+//Descrip: funcion que compra si las primeras 4 letras del CURP son palabras no permitidas
+//Param:primeras 4 caracteres del Curp
+function f_Comparar(asPal){
+	var lsPalabrotas = "BUEI/CACA/CAGA/CAKA/COGE/COJE/COJO/FETO/JOTO/KACO/KAGO/KOJO/KULO/MAMO/MEAS/MION/MULA/PEDO/PUTA/QULO/RUIN/BUEY/CACO/CAGO/CAKO/COJA/COJI/CULO/GUEY/KACA/KAGA/KOGE/KAKA/MAME/MEAR/MEON/MOCO/PEDA/PENE/PUTO/RATA";
+	
+    var lArrPalabrotas=lsPalabrotas.split('/');
+    for(var i=0;i<lArrPalabrotas.length;i++)
+        if (asPal==lArrPalabrotas[i])
+            return true
+    return false;
+}
+//Descrip: funcion que devuelve la inicial de una cadena
+//Param: alguna palabra
+function f_inicial(asPal)
+{
+    var lsPalabra=asPal;
+    return lsPalabra.substring(0,1);
+}
+//Descrip: funcion que devuelve la primera vocal interna de una palabra
+//Param: alguna palabra
+function f_primeraVocalinterna(asPal)
+{
+    var lsAp=asPal;
+    var liI=0;
+    var liXi=0;
+    if ((lsAp.substring(0,1)=="A") || (lsAp.substring(0,1)=="E") || (lsAp.substring(0,1)=="I") || (lsAp.substring(0,1)=="O") || (lsAp.substring(0,1)=="U")){
+        liXi=1;
+    }
+    for(liI=liXi;liI<=lsAp.length-1;liI++){
+        if ((lsAp.substring(liI,liI+1)=="A") || (lsAp.substring(liI,liI+1)=="E") || (lsAp.substring(liI,liI+1)=="I") || (lsAp.substring(liI,liI+1)=="O") || (lsAp.substring(liI,liI+1)=="U")){
+            return (lsAp.substring(liI,liI+1));
+        }
+    }
+    return "X";
+}
+//Descrip: funcion que compara los 6 dígitos del las fechas del RFC y CURP que coincidan
+//Param: curp y rfc
+function f_compararFechas(asCurp,asRfc){
+    var lsFechacurp="";
+    var lsFecharfc="";
+    lsFechacurp=asCurp.substring(4,10);
+    lsFecharfc=asRfc.substring(4,10);
+    if (lsFechacurp==lsFecharfc){
+        return true;
+    }else{
+        return false;
+    }
+}
+//Descrip: funcion que compara que los 3 caracteres de la hoclave no sean repetidos y sea nunerosy letras
+//Param: rfc
+function f_mascHomoclaveRFC(asRfc){
+    lmMasc=/^([0-9a-zA-Z]{3})$/
+    lsHomoclave=asRfc.substring(10,13);
+    if (lmMasc.test(lsHomoclave)){
+        /*if (lsHomoclave.substring(0,1)==lsHomoclave.substring(1,2) && lsHomoclave.substring(2,3)==lsHomoclave.substring(0,1) && lsHomoclave.substring(1,2)==lsHomoclave.substring(0,1) ){
+            return false;
+        }*/
+    }else{
+        return false;
+    }
+    return true;
+}
+//Descrip: funcion que compara la clave del estado del curp con el edo correcto
+function f_valEdoCurp(asCurp,asEdo){
+    var lsClvEdo=asCurp.substring(11,13);
+    if (lsClvEdo==asEdo){
+        return true;
+    }else{
+        return false;
+    }
+}
+//Descrip: funcion que valida y compara las tres consonantes internas del Curp
+//Param: nombre,apellido paterno, apellido materno, curp
+function f_val3ConsonantesIntCurp(asNom,asApp,asApm,asCurp){
+    var lsFormarConsonantes=f_primeraConsonanteInterna(asApp)+f_primeraConsonanteInterna(asApm)+f_primeraConsonanteInterna(asNom);
+    var lsCurpConsonantes=asCurp.substring(13,16);
+    /*/if (lsFormarConsonantes==lsCurpConsonantes){
+			return true;
+		}else{
+			return false;	
+		}*/
+    return true;
+}
+//Descrip: funcion que devuelve la Primera consonante interna de una palabra
+//Param: palabra
+function f_primeraConsonanteInterna(asDato)
+{
+    var lsAp=asDato;
+    var lsF="";
+    var liI=0;
+    var liXi=0;
+    if ((lsAp.substring(0,1)=="B") || (lsAp.substring(0,1)=="C") || (lsAp.substring(0,1)=="D") || (lsAp.substring(0,1)=="F") || (lsAp.substring(0,1)=="G") || (lsAp.substring(0,1)=="H") || (lsAp.substring(0,1)=="J") || (lsAp.substring(0,1)=="K") || (lsAp.substring(0,1)=="L") || (lsAp.substring(0,1)=="M") || (lsAp.substring(0,1)=="N") || (lsAp.substring(0,1)=="P") || (lsAp.substring(0,1)=="Q") || (lsAp.substring(0,1)=="R") || (lsAp.substring(0,1)=="S") || (lsAp.substring(0,1)=="T") || (lsAp.substring(0,1)=="V") || (lsAp.substring(0,1)=="W") || (lsAp.substring(0,1)=="X") || (lsAp.substring(0,1)=="Y") || (lsAp.substring(0,1)=="Z")){
+        liXi=1;
+    }
+    for(liI=liXi;liI<=lsAp.length-1;liI++){
+        if ((lsAp.substring(liI,liI+1)=="B") || (lsAp.substring(liI,liI+1)=="C") || (lsAp.substring(liI,liI+1)=="D") || (lsAp.substring(liI,liI+1)=="F") || (lsAp.substring(liI,liI+1)=="G") || (lsAp.substring(liI,liI+1)=="H") || (lsAp.substring(liI,liI+1)=="J") || (lsAp.substring(liI,liI+1)=="K") || (lsAp.substring(liI,liI+1)=="L") || (lsAp.substring(liI,liI+1)=="M") || (lsAp.substring(liI,liI+1)=="N") || (lsAp.substring(liI,liI+1)=="P") || (lsAp.substring(liI,liI+1)=="Q") || (lsAp.substring(liI,liI+1)=="R") || (lsAp.substring(liI,liI+1)=="S") || (lsAp.substring(liI,liI+1)=="T") || (lsAp.substring(liI,liI+1)=="V") || (lsAp.substring(liI,liI+1)=="W") || (lsAp.substring(liI,liI+1)=="X") || (lsAp.substring(liI,liI+1)=="Y") || (lsAp.substring(liI,liI+1)=="Z")){
+            return (lsAp.substring(liI,liI+1));
+        }
+    }
+    return "X";
+}
+//Descrip: funcion que verifica que los caracteres introducidos en el curp cumplan el patron de caracteres
+//Param: curp
+function f_mascCurp(aTxtCurp)
+{	
+    //          4 letras        6 dìgitos   1 letra sexo   EDOS:2letras 1              2                 3                 4                 5 			    6 				  7				    8				  9					10				  11				12				  13				14				  15				16				  17				18				  19				20				  21				22				  23				24				   25				26				  27				28				  29				30				  31				32				  33			3 letras      2 dígitos
+    var lmMasc= /^([A-Za-z]{4})+([0-9]{6})+([HM]{1}|[hm]{1})+(([AS]{2}|[as]{2})|([BC]{2}|[bc]{2})|([BS]{2}|[bs]{2})|([CC]{2}|[cc]{2})|([CL]{2}|[cl]{2})|([CM]{2}|[cm]{2})|([CS]{2}|[cs]{2})|([CH]{2}|[ch]{2})|([AS]{2}|[as]{2})|([DF]{2}|[df]{2})|([DG]{2}|[dg]{2})|([GT]{2}|[gt]{2})|([GR]{2}|[gr]{2})|([HG]{2}|[hg]{2})|([JC]{2}|[jc]{2})|([MC]{2}|[mc]{2})|([MN]{2}|[mn]{2})|([MS]{2}|[ms]{2})|([NT]{2}|[nt]{2})|([NL]{2}|[nl]{2})|([OC]{2}|[oc]{2})|([PL]{2}|[pl]{2})|([QT]{2}|[qt]{2})|([QR]{2}|[qr]{2})|([SP]{2}|[sp]{2})|([SL]{2}|[sl]{2})|([SR]{2}|[sr]{2})|([TC]{2}|[tc]{2})|([TS]{2}|[ts]{2})|([TL]{2}|[tl]{2})|([VZ]{2}|[vz]{2})|([YN]{2}|[yn]{2})|([ZS]{2}|[zs]{2})|([NE]{2}|[ne]{2}))+([A-Za-z]{3})+([9876543210Aa]{1})+([0-9]{1})$/;
+    if (!lmMasc.test(aTxtCurp.value)){
+        return false;
+    }
+    return true;
+		
+}
+//Descrip: funcion que verifica que los caracteres introducidos en el rfc cumplan el patron de caracteres
+//Param: rfc
+function f_mascRfc(aTxtRfc)
+{
+    var lmMasc=/^([A-Za-z]{4})+([0-9]{6})+([0-9a-zA-Z]{3})$/;
+    if (!lmMasc.test(aTxtRfc.value)){
+        return false;
+    }
+    return true;
+}
+//Descrip: funcion que compara y valida el digito verificador del curp
+//param: curp 
+function f_DigVerificadorCurp(asCurp)
+{
+    var lmMasc=/^[0-9]{1}$/;
+    if (!lmMasc.test(asCurp.substring(17,18))){
+        return false;
+		
+    }else{
+        return true;
+    }
+}
+
+//Descrip: funcion que valida la estructura del RFC
+//Param: RFC
+function f_validaRFC(rfc){
+    //valido que no sea el rfc de hacienda ya que los primeros 4 caracteres no son letras
+    if (rfc != "SHC850101U37"){
+        var regexp = new RegExp("^[A-Z\u00D1]{4}\\d{6}[A-Z0-9]{3}$");
+        if (!regexp.test(rfc)) {
+            alert("El formato del RFC es incorrecto")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    return true;
+}
+
+//Descrip: funcion que compra si las primeras 4 letras del RFC son palabras no permitidas
+//Param:primeras 4 caracteres del RFC
+function f_validaLetrasRFC(rfc){
+    var asPal = rfc.substring(0,4)
+    var lsPalabrotas ="BACA/LOCO/BAKA/LOKA/BUEI/LOKO/BUEY/MAME/CACA/MAMO/CACO/MEAR/CAGA/MEAS/CAGO/MEON/CAKA/MIAR/CAKO/MION/COGE/MOCO/COGI/MOKO/COJA/MULA/COJE/MULO/COJI/NACA/COJO/NACO/COLA/PEDA/CULO/PEDO/FALO/PENE/FETO/PIPI/GETA/PITO/GUEI/POPO/GUEY/PUTA/JETA/PUTO/JOTO/QULO/KACA/RATA/KACO/ROBA/KAGA/ROBE/KAGO/ROBO/KAKA/RUIN/KAKO/SENO/KOGE/TETA/KOGI/VACA/KOJA/VAGA/KOJE/VAGO/KOJI/VAKA/KOJO/VUEI/KOLA/VUEY/KULO/WUEI/LILO/WUEY/LOCA/";
+    var lArrPalabrotas=lsPalabrotas.split('/');
+    for(var i=0;i<lArrPalabrotas.length-1;i++){
+        if (asPal==lArrPalabrotas[i]){
+            alert("Las primeras cuatro letras del RFC forman una palabra no permitida")
+            return false;
+        }
+    }
+    return true;
+}
+	

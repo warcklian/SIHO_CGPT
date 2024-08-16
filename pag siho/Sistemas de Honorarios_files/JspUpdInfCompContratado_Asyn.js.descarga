@@ -1,0 +1,100 @@
+	
+function f_getAllEntidades(){
+	PadronEntidadAsyn.getAllEntidades(lResultAllEntidades);
+	}
+	
+var lResultAllEntidades = function (data){
+        //var lDebug = "";
+	if ((data==null) || (data.length==0)){
+		alert("El Catalogo de Entidades federativas se encuentra vacio");
+		return;
+	}
+	dwr.util.removeAllOptions('_cbo_cve_edo');
+	DWRUtilAmpl.f_addOpc($('_cbo_cve_edo'),0,"[Seleccione]","00");
+	for (var rowIndex=0;rowIndex < data.length;rowIndex++) {
+                //lDebug =lDebug +"\n"+ rowIndex+" - "+(typeof data[rowIndex]);
+		if ((typeof data[rowIndex])=="object" ){
+			DWRUtilAmpl.f_addOpc($('_cbo_cve_edo'),rowIndex+1,data[rowIndex].descripcionEntidad,data[rowIndex].entidadId);
+		}
+	}
+	DWRUtilAmpl.f_SeleccionaOpcCbo($('_cbo_cve_edo'),gsCveEdo);
+         //$('Visualiza').update(lDebug);
+}
+
+function f_getMunicipios(){
+	PadronEntidadAsyn.getMunicipios({entidadId: gsCveEdo},lResultMpios);
+}
+
+function f_getMunicipiosCbo(){
+        gbActCbo == false; 
+        dwr.util.removeAllOptions('_cbo_cve_mpio');
+	DWRUtilAmpl.f_addOpc($('_cbo_cve_mpio'),0,"[Seleccione]","000");
+        dwr.util.removeAllOptions('cbo_cve_loc');
+	DWRUtilAmpl.f_addOpc($('_cbo_cve_loc'),0,"[Seleccione]","0000");
+        if ( $F('_cbo_cve_edo')=="00")
+            return;
+	PadronEntidadAsyn.getMunicipios({entidadId: $F('_cbo_cve_edo')},lResultMpios);
+}
+var lResultMpios = function (data){
+        //var lDebug = "";
+	if ((data==null) || (data.length==0)){
+		alert("El Catalogo de municipios federativas se encuentra vacio");
+		return;
+	}
+	dwr.util.removeAllOptions('_cbo_cve_mpio');
+	DWRUtilAmpl.f_addOpc($('_cbo_cve_mpio'),0,"[Seleccione]","000");
+	for (var rowIndex=0;rowIndex < data.length;rowIndex++) {
+                //lDebug =lDebug +"\n"+ rowIndex+" - "+(typeof data[rowIndex]);
+		if ((typeof data[rowIndex])=="object" ){
+			DWRUtilAmpl.f_addOpc($('_cbo_cve_mpio'),rowIndex+1,data[rowIndex].descripcionMunicipio,data[rowIndex].municipioId);
+		}
+	}
+         if ( gbActCbo == true ){
+            DWRUtilAmpl.f_SeleccionaOpcCbo($('_cbo_cve_mpio'),gsCveMpio);
+         }
+         //$('Visualiza').update(lDebug);
+}
+function f_getLocalidades(){
+	PadronEntidadAsyn.getLocalidades({entidadId: gsCveEdo,municipioId:gsCveMpio},lResultLoc);
+}
+function f_getLocalidadesCbo(){
+        gbActCbo == false; 
+        dwr.util.removeAllOptions('_cbo_cve_loc');
+	DWRUtilAmpl.f_addOpc($('_cbo_cve_loc'),0,"[Seleccione]","0000");
+        if ( $F('_cbo_cve_mpio')=="000")
+            return;         
+	PadronEntidadAsyn.getLocalidades({entidadId: $F('_cbo_cve_edo'),municipioId:$F('_cbo_cve_mpio')},lResultLoc);
+}
+var lResultLoc = function (data){
+        //var lDebug = "";
+	if ((data==null) || (data.length==0)){
+		alert("El Catalogo de Localidades federativas se encuentra vacio");
+		return;
+	}
+	dwr.util.removeAllOptions('_cbo_cve_loc');
+	DWRUtilAmpl.f_addOpc($('_cbo_cve_loc'),0,"[Seleccione]","0000");
+	for (var rowIndex=0;rowIndex < data.length;rowIndex++) {
+                //lDebug =lDebug +"\n"+ rowIndex+" - "+(typeof data[rowIndex]);
+		if ((typeof data[rowIndex])=="object" ){
+			DWRUtilAmpl.f_addOpc($('_cbo_cve_loc'),rowIndex+1,data[rowIndex].descripcionLocalidad,data[rowIndex].localidadId);
+		}
+	}
+         if ( gbActCbo == true ){
+            DWRUtilAmpl.f_SeleccionaOpcCbo($('_cbo_cve_loc'),gsCveLoc);
+         }
+         //$('Visualiza').update(lDebug);
+}
+//-----------------------------------
+if (window.addEventListener) {
+  window.addEventListener("load", init, false);
+}
+else if (window.attachEvent) {
+  window.attachEvent("onload", init);
+}
+else {
+  window.onload = init;
+
+}
+function init() {
+  dwr.util.useLoadingMessage("Consultando...");
+}

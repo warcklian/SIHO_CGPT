@@ -1,0 +1,234 @@
+# cspell: disable
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Sistemas de Honorarios - Modificación del Contrato</title>
+    <link rel="shortcut icon" href="http://siho.sep.gob.mx/siho2008//images/logoSep.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+        h2 {
+            text-align: center;
+        }
+        .section-title {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0;
+        }
+        .form-inline {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-inline .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .form-inline .form-group:last-child {
+            margin-right: 0;
+        }
+        .form-inline input {
+            width: 95%;
+        }
+        /* Additional Styles */
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header img {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        /* Button Styles */
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button-group .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button-group .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="http://siho.sep.gob.mx/siho2008//images/logoSep.ico" alt="Logo" width="30">
+        <span>Sistemas de Honorarios</span>
+    </header>
+
+    <div class="container">
+        <h2>MODIFICACIÓN DEL CONTRATO</h2>
+        
+        <div class="section-title">DATOS DE LA INSTITUCIÓN</div>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="ur">U.R.</label>
+                <input type="text" id="ur" value="600 -->SUBSECRETARÍA DE EDUCACIÓN MEDIA SUPERIOR">
+            </div>
+            <div class="form-group">
+                <label for="programa">Programa</label>
+                <input type="text" id="programa" placeholder="Ingrese el programa">
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="oficio">Oficio de afectación presupuestal</label>
+                <input type="text" id="oficio" placeholder="Ingrese el oficio de afectación">
+            </div>
+        </div>
+        
+        <div class="section-title">DATOS PERSONALES DEL PRESTADOR DE SERVICIOS</div>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="curp">CURP</label>
+                <input type="text" id="curp" value="VIMD820326MMCLLL02">
+            </div>
+            <div class="form-group">
+                <label for="rfc">RFC y Homoclave</label>
+                <input type="text" id="rfc" value="VIMD820326LN1">
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="primerApellido">Primer apellido</label>
+                <input type="text" id="primerApellido" value="VILLEGAS">
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre(s)</label>
+                <input type="text" id="nombre" value="DULCE VANESSA">
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="nacionalidad">Nacionalidad</label>
+                <input type="text" id="nacionalidad" value="MEXICANA">
+            </div>
+            <div class="form-group">
+                <label for="sexo">Sexo</label>
+                <input type="text" id="sexo" value="FEMENINO">
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="escolaridad">Escolaridad</label>
+                <input type="text" id="escolaridad" value="LICENCIATURA O PROFESIONAL">
+            </div>
+            <div class="form-group">
+                <label for="estadoNacimiento">Estado de Nacimiento</label>
+                <input type="text" id="estadoNacimiento" value="ESTADO DE MEXICO">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="especifique">Especifique</label>
+            <input type="text" id="especifique" value="13909359">
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="banco">Banco o CLABE</label>
+                <input type="text" id="banco" value="BBVA BANCOMER">
+            </div>
+            <div class="form-group">
+                <label for="clabe">CLABE</label>
+                <input type="text" id="clabe" value="012180015451720586">
+            </div>
+        </div>
+
+        <div class="section-title">DATOS DE LA CONTRATACIÓN</div>
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="fechaInicio">Fecha de inicio del contrato</label>
+                <input type="text" id="fechaInicio" value="2024-01-01-->ENERO">
+            </div>
+            <div class="form-group">
+                <label for="fechaTermino">Fecha de término del contrato</label>
+                <input type="text" id="fechaTermino" value="2024-02-29-->FEBRERO">
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="nivelContrato">Nivel del Contrato</label>
+                <input type="text" id="nivelContrato" value="P23-->ENLACE">
+            </div>
+            <div class="form-group">
+                <label for="montoBruto">Monto Bruto Mensual</label>
+                <input type="text" id="montoBruto" placeholder="Ingrese el monto bruto mensual">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fina">Fina</label>
+            <input type="text" id="fina" value="FISCALES">
+        </div>
+
+        <div class="form-group">
+            <label for="compatibilidad">Compatibilidad</label>
+            <input type="checkbox" id="compatibilidad">
+        </div>
+
+        <div class="section-title">INFORMACIÓN DE SOPORTE DEL NIVEL</div>
+        <div class="form-group">
+            <label for="infoSoporte">Conocimientos requeridos por la dependencia</label>
+            <input type="text" id="infoSoporte" value="EDUCACIÓN Y HUMANIDADES">
+        </div>
+        
+        <!-- Botones de Aceptar y Cancelar -->
+        <div class="button-group">
+            <button class="accept-btn">Aceptar</button>
+            <button class="cancel-btn">Cancelar</button>
+        </div>
+    </div>
+</body>
+</html>

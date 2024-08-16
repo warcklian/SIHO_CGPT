@@ -1,0 +1,151 @@
+// JavaScript Document++
+//Descrip: funcion que revisa todos los Textos de un formulario, dependiendo del areglo de indice de controles
+//Param: el formulario
+function f_CheckText(form) {
+			
+			for (i=0;i<lArrControlText.length;i++){
+				if (f_ValidarText(form,form.elements[lArrControlText[i]].name, 1, lArrMensajeText[i])==false) return 1; ;
+			}
+			return 0; 
+	}
+//Descrip: funcion que revisa todos los Select de un formulario, dependiendo del areglo de indice de controles
+//Param: el formulario	
+function f_CheckSelect(form) {
+			
+			for (i=0;i<lArrControlSelect.length;i++){
+				if (f_validarSelect(form,form.elements[lArrControlSelect[i]].name, "0", lArrMensajeSelect[i])==false) return 1; ;
+			}
+			return 0; 
+	}	
+//Descrip: Funcion que valida un Text mandando un Alert en caso de estar vacio
+//param: formulario,Nombre del control text,tamaño minino que acepta,mensaje a mostrar
+function f_ValidarText(form,asNombretext, aiTamanotext, asMensaje) {
+  if (form.elements[asNombretext] ) {
+    var lsValor = form.elements[asNombretext].value;
+
+    if (lsValor == '' || lsValor.length < aiTamanotext) {
+	  alert('Debe capturar '+asMensaje);
+	  try{
+      form.elements[asNombretext].focus();
+	  }catch(ex){}
+      return false;
+    }
+  }else{
+  	return false;
+  }
+  return true;
+}
+//Descrip: Funcion que valida un Select mandando un Alert en caso de estar seleccionado el Default
+//param: formulario,Nombre del control Select,elemento por default,mensaje a mostrar
+function f_validarSelect(form,asNombreSelect, asSelectDefault, asMensaje) {
+  if (form.elements[asNombreSelect] && (form.elements[asNombreSelect].type != "hidden")) {
+    var valor = form.elements[asNombreSelect].value;
+
+    if (valor == asSelectDefault) {
+	  alert('Debe seleccionar '+asMensaje);
+	  try{
+      form.elements[asNombreSelect].focus();
+	  }catch(ex){}
+	  return false;
+    }
+  }
+  return true;
+}
+
+//convierte el contenido de los text en mayusculas
+function f_TodosTextMayus(form) {
+			var v;
+			var x
+			for (i=0;i<form.length;i++){
+			 try{
+				if (((form.elements[i].type == "text") || (form.elements[i].type == "textarea")) && (form.elements[i].type != "hidden")){
+					x=form.elements[i].value;
+					v=f_trim(x);
+					form.elements[i].value=v.toUpperCase(); 
+				}	
+			 }catch(ex){}
+			}
+			f_EliminaComillaSimple(form);
+			f_EliminaSaltoLinea(form);
+			
+	}
+function f_TextMayus(form, asNbObj) {
+			var v;
+			var x
+			try{
+				if (((form.elements[asNbObj].type == "text") || (form.elements[asNbObj].type == "textarea")) && (form.elements[asNbObj].type != "hidden")){
+					x=form.elements[asNbObj].value;
+					v=f_trim(x);
+					form.elements[asNbObj].value=v.toUpperCase(); 
+				}	
+			}catch(ex){alert(ex);}
+			
+	}
+//elimina el la comilla de los textos
+function f_EliminaComillaSimple(form) {
+			var v;
+			var x;
+		    out = "'"; // reemplazar la letra a
+            add = "´"; // por la letra z
+
+			for (i=0;i<form.length;i++){
+				try{
+				if (((form.elements[i].type == "text") || (form.elements[i].type == "textarea")) && (form.elements[i].type != "hidden")){
+					x=form.elements[i].value;
+					v=f_trim(x);
+					////////////////////////
+                    temp = "" + v;
+                    while (temp.indexOf(out)>-1) {
+                      pos= temp.indexOf(out);
+                      temp = "" + (temp.substring(0, pos) + add + 
+                      temp.substring((pos + out.length), temp.length));
+                    }
+					////////////////////////
+					form.elements[i].value=temp; 
+				}	
+				 }catch(ex){}
+			}
+			
+			
+	}
+	
+	//elimina el la comilla de los textos
+	function f_EliminaSaltoLinea(form) {
+			var v;
+			var x;
+		    out = '\r\n'; // reemplazar la letra a
+            add = ' '; // por la letra z
+			for (i=0;i<form.length;i++){
+				try{
+				if (((form.elements[i].type == "text") || (form.elements[i].type == "textarea")) && (form.elements[i].type != "hidden")){
+					x=form.elements[i].value;
+					//v=f_trim(x);
+                    temp = "" + x;
+                    while (temp.search(/\r\n/)>-1) {
+                      pos= temp.search(/\r\n/);
+                      temp = "" + (temp.substring(0, pos) + add + 
+                      temp.substring((pos + out.length), temp.length));
+                    }
+					form.elements[i].value=temp; 
+				}	
+				 }catch(ex){
+				 }
+			}
+	}
+	
+	function f_verc(form){
+	 	for(var i=0;i<form.length;i++){
+			alert("Control nombre: "+form.elements[i].name+" posicion: "+i+" tipo: "+form.elements[i].type);
+		}	
+	 }
+function f_trim(cadena)
+{ 
+	var pBlanco, uBlanco;
+ 	pBlanco = /^ */; //espacios en blanco al principio
+ 	uBlanco = / *$/; // espacios en blanco al final
+ 	c_1 = new String(cadena);
+ 	c_1 = c_1.replace(pBlanco,"");
+ 	c_1 = c_1.replace(uBlanco,"");
+ 
+ 	return c_1;
+} 

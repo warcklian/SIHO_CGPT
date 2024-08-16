@@ -1,0 +1,141 @@
+function DWRUtilAmpl() { }
+DWRUtilAmpl.f_addOpc = function (control, aiPos, asTxt, asVal){ 
+     var lselOpcion=new Option(asTxt, asVal); 
+     eval(control.options[aiPos]=lselOpcion); 
+};
+
+DWRUtilAmpl.f_SeleccionaOpcCbo = function (){ 
+	 var argumentos= DWRUtilAmpl.f_SeleccionaOpcCbo.arguments;
+	 var loCbo=argumentos[0];
+	 for(i=1;i<argumentos.length;i++){
+        for(j=0;j<loCbo.options.length;j++){
+            if(loCbo.options[j].value!=argumentos[i])continue;
+			else loCbo.options[j].selected=1;
+        }
+    }
+};
+DWRUtilAmpl.f_getSelectMultiple = function (control){ 
+     var lsCadenaElemSelect="";
+	 for (var i = 0; i < control.options.length; i++){
+		 if (control.options[ i ].selected){
+		    lsCadenaElemSelect=lsCadenaElemSelect+control.options[ i ].value+",";
+		 } 
+     }
+	 lsCadenaElemSelect=lsCadenaElemSelect.substring(0,lsCadenaElemSelect.length-1);
+	 return lsCadenaElemSelect;
+};
+DWRUtilAmpl.f_getSelectMultipleIndex = function (control){ 
+     var lsCadenaElemSelect="";
+	 for (var i = 0; i < control.options.length; i++){
+		 if (control.options[ i ].selected){
+		    lsCadenaElemSelect= i +",";
+		 } 
+     }
+	 lsCadenaElemSelect=lsCadenaElemSelect.substring(0,lsCadenaElemSelect.length-1);
+	 return lsCadenaElemSelect;
+};
+
+DWRUtilAmpl.f_getSelectMultipleApostrofo = function (control){ 
+     var lsCadenaElemSelect="'";
+	 if (control.options.length==0) return "";
+	 var ii=0;
+	 for (var i = 0; i < control.options.length; i++){
+		 if (control.options[ i ].selected){
+		    lsCadenaElemSelect=lsCadenaElemSelect+control.options[ i ].value+"','";
+			ii++;
+		 } 
+     }
+	 if (ii == 0){
+	     lsCadenaElemSelect=null;
+	 }else{
+		 lsCadenaElemSelect=lsCadenaElemSelect.substring(0,lsCadenaElemSelect.length-2);
+	 }
+	 return lsCadenaElemSelect;
+};
+
+DWRUtilAmpl.f_getRadioButtonSelectedValue = function (control){ 
+     if (control.length==undefined){
+		if(control.checked) return control.value;
+	 }else{
+     for(i=0;i<control.length;i++)
+        if(control[i].checked) return control[i].value;
+	 }
+	 return null;
+};
+
+DWRUtilAmpl.f_getSeleccionaRadioButtonValue = function (control, asVal){ 
+     if (control.length==undefined){
+		 control.checked = true;
+	 }else{
+     for(i=0;i<control.length;i++)
+	 
+        if(control[i].value == asVal) control[i].checked = true;
+	 }
+};
+
+DWRUtilAmpl.f_getCheckSelectedValue = function (control){ 
+	 var lsReturn = "";
+	 var lbandera=false;
+	 if (control.length==undefined){
+		 if (control.checked){
+		 	lsReturn=lsReturn+control.value+"|";
+			lbandera=true;
+		 }
+	 }else{
+     for(i=0;i<control.length;i++)
+        if(control[i].checked){
+			lsReturn=lsReturn+control[i].value+"|";
+			lbandera=true;
+		}
+	 }
+	 if (lbandera==true)
+	  return lsReturn.substring(0,lsReturn.length-1);
+	 else
+	  return "";
+};
+DWRUtilAmpl.f_getCheckSelectedValueIndex = function (control,index){
+	 var lsReturn = "";
+	 var lbandera=false;
+        // alert(index);
+	 if (index==0){
+		 if (control.checked){
+		 	lsReturn=lsReturn+control.value+"|";
+			lbandera=true;
+		 }
+	 }else{
+         //alert("Varios");
+     for(i=0;i<index;i++){
+         //alert(i+": "+control[i].checked+"---"+control[i].value);
+        if(control[i].checked == true){
+			lsReturn=lsReturn+control[i].value+"|";
+			lbandera=true;
+		}
+     }
+	 }
+	 if (lbandera==true)
+	  return lsReturn.substring(0,lsReturn.length-1);
+	 else
+	  return "";
+};
+DWRUtilAmpl.f_getSelectMultipleText = function (control){ 
+     var lsCadenaElemSelect="";
+	 for (var i = 0; i < control.options.length; i++){
+		 if (control.options[ i ].selected){
+		    lsCadenaElemSelect=lsCadenaElemSelect+control.options[ i ].text+",";
+		 } 
+     }
+	 lsCadenaElemSelect=lsCadenaElemSelect.substring(0,lsCadenaElemSelect.length-1);
+	 return lsCadenaElemSelect;
+};
+
+DWRUtilAmpl.f_RemoveOpcCbo = function (){ 
+	 var argumentos= DWRUtilAmpl.f_RemoveOpcCbo.arguments;
+	 var loCbo=argumentos[0];
+	 for(i=1;i<argumentos.length;i++){
+        for(j=0;j<loCbo.options.length;j++){
+            if(loCbo.options[j].value!=argumentos[i])continue;
+			else loCbo.remove(j);
+        }
+    }
+};
+

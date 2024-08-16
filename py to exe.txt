@@ -1,0 +1,5 @@
+En la carpeta donde esta el archivo py a convertir escribimos
+
+pip install pyinstaller
+
+pyinstaller -F -w -i icon.ico programa.py

@@ -1,0 +1,178 @@
+.overlay_themeSiho{
+	background-color: #FFF;
+	filter:alpha(opacity=60);
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+}
+.top_draggable, .bottom_draggable {
+	cursor:move;
+}
+
+.status_bar {
+	font-size:12px;
+}
+.status_bar input{
+	font-size:12px;
+}
+
+.wired_frame {
+	display:block;
+	position:absolute;
+	border:1px #000 dashed;
+}
+.themeSiho_wired_frame {
+	background:#FFF;
+	filter:alpha(opacity=60);
+	-moz-opacity:0.6;
+	opacity:0.6;	
+}
+.themeSiho_nw {
+	width: 9px;
+	height: 28px;
+	background: transparent url(themeSiho/top-left-blue.png) no-repeat 0 0;		
+}
+
+.themeSiho_n {
+	height: 28px;
+	background: transparent url(themeSiho/top-middle-blue.png) repeat-x 0 0;	
+}
+
+.themeSiho_ne {
+	width: 15px;
+	height: 28px;
+	background: transparent url(themeSiho/top-right-blue.png) no-repeat 0 0;		
+}
+
+.themeSiho_e {
+	width: 15px;
+	background: transparent url(themeSiho/right-blue.png) repeat-y top right;	
+}
+
+.themeSiho_w {
+	width: 9px;
+	background: transparent url(themeSiho/left-blue.png) repeat-y top left;		
+}
+
+.themeSiho_sw {
+	width: 9px;
+	height: 15px;
+	background: transparent url(themeSiho/bottom-left-blue.png) no-repeat 0 0;			
+}
+
+.themeSiho_s {
+	height: 15px;
+	background: transparent url(themeSiho/bottom-middle-blue.png) repeat-x 0 0;	
+}
+
+.themeSiho_se {
+	width: 15px;
+	height: 15px;
+	background: transparent url(themeSiho/bottom-right-blue.png) no-repeat 0 0;			
+}
+
+.themeSiho_sizer {
+	width: 15px;
+	height: 15px;
+	background: transparent url(themeSiho/bottom-right-blue.png) no-repeat 0 0;	
+	cursor:se-resize;	
+}
+
+.themeSiho_close {
+	width: 15px;
+	height: 9px;
+	background: transparent url(themeSiho/button-close-blue.png) no-repeat 0 0;			
+	position:absolute;
+	top:11px;
+	right:10px;
+	cursor:pointer;
+	z-index:1000;
+}
+
+.themeSiho_maximize {
+	width:15px;
+	height:9px;
+	background:transparent url(themeSiho/button-maximize-blue.png) no-repeat 0 0;			
+	position:absolute;
+	top:11px;
+	right:25px;
+	cursor:pointer;
+	z-index:1000;
+}
+
+.themeSiho_minimize {
+	width:15px;
+	height:9px;
+	background:transparent url(themeSiho/button-minimize-blue.png) no-repeat 0 0;			
+	position:absolute;
+	top:11px;
+	right:40px;
+	cursor:pointer;
+	z-index:1000;
+}
+
+
+.themeSiho_title {
+	float:left;
+	height:14px;
+	font-size:14px;
+	font-weight:bold;
+	font-family:Verdana, Arial, sans-serif;
+	text-align:center;
+	margin-top:2px;
+	width:100%;
+	color:#17385B;
+}
+
+.themeSiho_content {
+	overflow:auto;
+	color:#000;
+	font-family:Verdana, Arial, sans-serif;
+	font-size:12px;
+	background:#dbdada;
+}
+/* For alert/confirm dialog */
+.themeSiho_window {
+	border:1px solid #F00;	
+	background:#FFF;
+	padding:20px;
+	margin-left:auto;
+	margin-right:auto;
+	width:400px;
+}
+
+.themeSiho_message {
+  	font-size:12px;
+	text-align:center;
+	width:100%;
+	padding-bottom:10px;
+}
+
+.themeSiho_buttons {
+	text-align:center;
+	width:100%;
+}
+
+.themeSiho_buttons input {
+	border:1px solid #999;
+	border-top-color:#CCC;
+	border-left-color:#CCC;
+	padding:2px;
+	background-color:#FFF;
+	color:#333;
+	background-image:url(themeSiho/background_buttons.gif);
+	background-repeat:repeat-x;
+	font-family:Verdana, Arial, sans-serif;
+	font-size:10px;
+	font-weight:bold;
+	text-align:center;
+}
+
+.themeSiho_progress {
+	float:left;
+	margin:auto;
+	text-align:center;
+	width:100%;
+	height:16px;
+	background: #7389cd url('themeSiho/spinner.gif') no-repeat center center
+}
+

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Form</title>
+    <style>
+        /* Estilos para el formulario */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-group {
+            flex: 0 0 48%;
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            flex-basis: 100%;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0066cc;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004080;
+        }
+
+        #recordCount {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333333;
+        }
+    </style>
+    <script>
+        let recordCount = 0;
+
+        function generateTramiteNumber() {
+            return Math.floor(100000 + Math.random() * 900000);
+        }
+
+        function setTramiteNumber() {
+            const tramiteField = document.querySelector('input[name="tramite_number"]');
+            tramiteField.value = generateTramiteNumber();
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            recordCount++;
+            document.getElementById("recordCount").textContent = `Number of Records: ${recordCount}`;
+            console.log(`Tramite Number: ${document.querySelector('input[name="tramite_number"]').value}`);
+            console.log(recordCount);
+            document.getElementById("testForm").reset();
+            setTramiteNumber();
+        }
+
+        window.onload = setTramiteNumber;
+    </script>
+</head>
+<body>
+    <form id="testForm" onsubmit="handleSubmit(event)">
+        <div>
+            <p id="recordCount">Number of Records: 0</p>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" name="first_name" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="last_name_paternal" placeholder="Last Name (Paternal)" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="last_name_maternal" placeholder="Last Name (Maternal)" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="rfc" placeholder="RFC" required>
+            </div>
+            <div class="form-group full-width">
+                <textarea name="address" placeholder="Address" required style="height: 100px;"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" name="postal_code" placeholder="Postal Code" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="phone" placeholder="Phone" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="date" name="start" placeholder="Start Date" required>
+            </div>
+            <div class="form-group">
+                <input type="date" name="end" placeholder="End Date" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="tramite_number" placeholder="Tramite" readonly>
+            </div>
+        </div>
+        <button type="submit" name="submit_button">Submit</button>
+    </form>
+    </body>
+</html>

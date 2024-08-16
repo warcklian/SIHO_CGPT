@@ -1,0 +1,20 @@
+
+// Provide a default path to dwr.engine
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
+
+if (InstitucionesAsyn == null) var InstitucionesAsyn = {};
+InstitucionesAsyn._path = '/siho2008/utils/Ajax/dwr';
+InstitucionesAsyn.getInstituciones = function(p0, p1, p2, p3, callback) {
+  dwr.engine._execute(InstitucionesAsyn._path, 'InstitucionesAsyn', 'getInstituciones', p0, p1, p2, p3, callback);
+}
+InstitucionesAsyn.insInstitucion = function(p0, callback) {
+  dwr.engine._execute(InstitucionesAsyn._path, 'InstitucionesAsyn', 'insInstitucion', p0, callback);
+}
+InstitucionesAsyn.delInstitucion = function(p0, callback) {
+  dwr.engine._execute(InstitucionesAsyn._path, 'InstitucionesAsyn', 'delInstitucion', p0, callback);
+}
+InstitucionesAsyn.getInstitucionesByRamo = function(p0, callback) {
+  dwr.engine._execute(InstitucionesAsyn._path, 'InstitucionesAsyn', 'getInstitucionesByRamo', p0, callback);
+}

@@ -1,0 +1,147 @@
+// JavaScript Document
+var gsCurpObtenido;
+function f_consultaCurpByDetalle(){
+    //alert($F("hdn_fhNacimiento"));
+    var lArrFh = ($F("hdn_fhNacimiento")).split("-");
+    var lsFhNac = lArrFh[2] + "/" + lArrFh[1] + "/" + lArrFh[0];
+    CurpRenapoAsyn.getCurpsRenapoPorDetalle($F("txt_apellido1"),$F("txt_apellido2"),$F("txt_nombres"),$F("cbo_tpo_sexo"),lsFhNac,$F("cbo_entidadFed"),function(data){
+        if ((data==null) || (data.length==0)){
+            alert("No se encontró ninguna CURP en RENAPO con los criterios de búsqueda");
+            clearGrid("ftRenapo");
+            return;
+        }
+        var lArrFtData = new Array();
+        //INTERACCIONO LOS REGISTROS DE LA PAGINA CONTENIDOS EN EL OBJETO PAGE PROPIEDAD results
+        for (var rowIndex in data) {
+            //SOLO OBTENGO LOS OBJETOS DEL RESULT, PUES PUEDE CONTENER FUNCIONES
+            if ((typeof data[rowIndex])=="object" ){
+                //OBTENGO UN PARAMEQUIVVO DEL REGISTRO DE LA PAGINA
+                var lBean = data[rowIndex];
+                //LLENO LOS DATOS DE ACUERDO A LOS NOMBRES DE LAS COLUMNAS DEL FILTERTABLE
+                //Id: SERA EL VALUE DEL TR
+                var o ={
+                    Id: lBean.curp,
+                    _curp: lBean.curp,
+                    _nombre_completo: lBean.apellido1 + " " + lBean.apellido2 + " " + lBean.nombres,
+                    _sexo: lBean.sexo,
+                    _entidad: lBean.cveEntidadNac,
+                    _fh_nacimiento: lBean.fechNac
+                };
+                //INSERTO UNA FILA AL ARREGLO
+                lArrFtData.push(o);
+            }//if
+        }//FOR
+        //INSERTO LOS NUEVOS ELEMENTOS EN EL FILTERTABLE
+        var w=dojo.widget.byId("ftRenapo");
+        w.store.setData(lArrFtData);
+    });
+}
+
+//LIMPIO EL FILTERTABLE
+function clearGrid(key){
+    dojo.widget.byId(key).store.clearData();
+}
+
+function f_getInfoPersonalByCurpRenapo(aiConfirm){
+	
+    if ( $F('txt_curp') == "" ){
+        alert("Capture correctamente la CURP para obtener la información de RENAPO");
+        $('txt_curp').focus();
+        f_limpiarCamposCurp();
+        return false;
+    }
+    if (f_mascCurp($('txt_curp'))==false){
+        alert("CURP escrita de manera Incorrecta");
+        $('txt_curp').focus();
+        $('txt_curp').select();
+        return false;
+    }
+    CurpRenapoAsyn.getInfoByCurp($F('txt_curp'), function(data){
+        var lbAlertaNac = false;
+        if (data.statusOper == "EXITOSO"){
+            if ( $F('txt_curp') != data.curp ){
+                if ( confirm("La CURP consultada ("+$F('txt_curp')+") en RENAPO difiere a "+data.curp+", la cual es la vigente para esta persona.\n\n¿Estás de acuerdo con tomar la información obtenida de RENAPO?") ){
+                    $('txt_curp').value = data.curp;
+                }else{
+                    $('txt_curp').value = "";
+                    f_limpiarCamposCurp();
+                    return;
+                }
+            }
+            var lsPRevioNac = $F('cbo_cve_nac');
+            if ( lsPRevioNac == "1621"  ){}else{ 
+                var newOption = document.createElement('OPTION');
+                newOption.value = "1621";
+                newOption.text = "MEXICANA";
+                //alert($('cbo_cve_nac').length);
+                $('cbo_cve_nac').options[$('cbo_cve_nac').length] = newOption;
+            }
+            $('txt_paterno').value = data.apellido1;
+            $('txt_materno').value = data.apellido2;
+            $('txt_nombre').value = data.nombres;
+            $('hdn_fh_nacimiento').value = data.fechNac;
+            if ( data.sexo == "M" ){
+                DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_tpo_sexo'), "FEMENINO");
+            }else{
+                DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_tpo_sexo'), "MASCULINO");
+            }
+            //alert( data.nacionalidad + "::" + data.cveEntidadNac);
+            if ( data.nacionalidad == "MEX" ){
+                DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_cve_nac'), "1621");
+                DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_edo'), data.cveEntidadNac);
+                $('cbo_cve_nac').disabled = true;
+                $('cbo_edo').disabled = true;
+            }else{
+                $('cbo_cve_nac').disabled = false;
+                DWRUtilAmpl.f_RemoveOpcCbo($('cbo_cve_nac'),'1621');
+                //DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_edo'), "0");
+                DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_edo'), data.cveEntidadNac);
+                lbAlertaNac = true;
+            }
+            if ( aiConfirm == 1 ){
+                if ( confirm('La información obtenida de RENAPO debe corresponder con los documentos oficiales presentados para la contratación. Donde esta información será tomada para formalizar documentos y productos generados en el Sistema.\n\n¿Estás de acuerdo con la información obtenida de RENAPO?')){
+                    gsCurpObtenido = $F('txt_curp');
+                    if ( lbAlertaNac == true ){
+                        alert("La información obtenida de RENAPO, indica que esta persona tiene una nacionalidad extranjera correspondiente a las siglas del país ("+data.nacionalidad+")\n\nSeleccione la nacionalidad de origen de esta persona correctamente.");
+                    }
+                }else{
+                    $('txt_curp').value = "";
+                    f_limpiarCamposCurp();
+                    gsCurpObtenido = "";
+                }
+            }
+        }else{
+            alert("La CURP no existe en RENAPO");
+            f_limpiarCamposCurp();
+        }
+    });
+}
+
+function f_limpiarCamposCurp(){
+    $('txt_curp').focus();
+    $('txt_paterno').value = "";
+    $('txt_materno').value = "";
+    $('txt_nombre').value = "";
+    DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_tpo_sexo'), "0");
+    DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_cve_nac'), "0");
+    DWRUtilAmpl.f_SeleccionaOpcCbo($('cbo_edo'), "0");
+}
+	
+function f_onchangeValidaCurp(){
+    if ( ($F('txt_curp')).length != 18 ) return;
+    CurpRenapoAsyn.existeCurpRenapo($F('txt_curp'),function(data){
+        switch( parseInt(data) ){
+            case 0:
+                alert("La CURP es incorrecta, no existe en la base de datos de RENAPO.\nCapture correctamente la CURP.");
+                $('txt_curp').value = "";
+                $('txt_curp').focus();
+                f_limpiarCamposCurp();
+                break;
+        }
+    });
+}	
+ 
+function f_onchangeObtieneInfoCurp(){
+    if ( ($F('txt_curp')).length != 18 ) return;
+    f_getInfoPersonalByCurpRenapo(0);
+}	

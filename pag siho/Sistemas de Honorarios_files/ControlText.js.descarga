@@ -1,0 +1,156 @@
+// JavaScript Document
+//funcion que acepta solo numeros
+function detectBrowser() {
+    var ie = document.all != undefined;
+    var opera = window.opera != undefined;
+   
+    if (opera) return true;
+    if (ie) return false;
+    if ((window)&&(window.netscape)&&(window.netscape.security)) {
+      if (window.XML) {
+        return true;
+      }
+      else return true;
+    }
+    return false;      // Si no sabemos que navegador es, devolvemos ie.
+  }
+
+var nav4 = window.Event ? true : false;
+var b = detectBrowser() ? true : false;
+function f_aceptaNumeros(evt){ 
+   var key = b ? evt.which : evt.keyCode;
+   //alert(b+"-"+key);
+   //if (key==undefined) return key;
+   return (key <= 13 || (key >= 48 && key <= 57)); 
+ }   
+
+//acepta solo letras y espacios en blanco
+//var b = window.Event ? true : false;
+function f_aceptaLetras(evt){ 
+   var key = b ? evt.which : evt.keyCode;
+   if (key==undefined) return key;
+   return ((key >=32 && key<=32)  || (key >=65 && key <= 90) || (key>=97 && key<=122) || (key==241) || (key==209) || (key==8) || (key==0));
+}  
+//acepta solo letras y espacios en blanco
+//var b = window.Event ? true : false;
+function f_aceptaLetrasAcentos(evt){
+
+   var key = parseInt( b ? evt.which : evt.keyCode);
+   //alert(key)
+  // alert(key+": "+ (key!=39) +"||"+ (key ==32 )  +"||"+ (key >=65 && key <= 90) +"||"+ (key>=97 && key<=122) +"||"+ (key==241) +"||"+ (key==209) +"||"+ (key==225) +"||"+ (key==233) +"||"+ (key==237) +"||"+ (key==243) +"||"+ (key==250) +"||"+ (key==193) +"||"+ (key==201) +"||"+ (key==205) +"||"+ (key==211) +"||"+ (key==218))
+   if (key==undefined) return key;
+   return ((key >=32 && key<=32)  || (key >=65 && key <= 90) || (key>=97 && key<=122) || (key==241) || (key==209) || (key==225) || (key==233) || (key==237) || (key==243) || (key==250) || (key==193) || (key==201) || (key==205) || (key==211) || (key==218) || (key == 46) || (key==252) || (key==220) || (key==8) || (key==0));
+
+}  
+
+//acepta letras y números con especio en blanco 
+var d = window.Event ? true : false;
+function f_aceptaLetrasNumeros(evt){ 
+   var key = b ? evt.which : evt.keyCode;
+   if (key==undefined) return key;
+   return (  (key >=32 && key<=32) || (key >=65 && key <= 90) || (key>=97 && key<=122) || (key >= 48 && key <= 57) || (key==241) || (key==209) || (key==8) || (key==0));
+} 
+//acepta letras y numeros sin espacios en blanco
+//var d = window.Event ? true : false;
+function f_aceptaLetrasNumerosSinspacios(evt){ 
+   var key = b ? evt.which : evt.keyCode;
+   if (key==undefined) return key;
+   return (  (key >=65 && key <= 90) || (key>=97 && key<=122) || (key >= 48 && key <= 57) || (key == 46) || (key==8) || (key==0));
+} 
+
+//var d = window.Event ? true : false;
+	function f_aceptaLetrasNumerospc(evt){ 
+		var key = b ? evt.which : evt.keyCode;
+	 	return (key!=39);	
+	} 
+
+//	var nav4 = window.Event ? true : false;
+function f_aceptaNumerosDec(evt){ 
+   var key = b ? evt.which : evt.keyCode;
+   if (key==undefined) return key;
+   return (key <= 13 || (key >= 48 && key <= 57) || (key == 46) || (key==8) || (key==0));
+ }
+
+ function f_aceptaEnvioRenapo(evt){
+   var key = b ? evt.which : evt.keyCode;
+   //alert(key);
+   if (key==undefined) return key;
+   return ((key >=32 && key<=32)  || (key >=65 && key <= 90) || (key>=97 && key<=122) || (key==241) || (key==209) || (key==8) || (key==0)  || (key==45) || (key==46) || (key==47) || (key==39));
+}
+
+
+function f_validaExistCaracteresEspecialesRenapo(asValue){
+	if ( asValue.indexOf('á') != -1 ) return true;
+	if ( asValue.indexOf('é') != -1 ) return true;
+	if ( asValue.indexOf('í') != -1 ) return true;
+	if ( asValue.indexOf('ó') != -1 ) return true;
+	if ( asValue.indexOf('ú') != -1 ) return true;
+	if ( asValue.indexOf('Á') != -1 ) return true;
+	if ( asValue.indexOf('É') != -1 ) return true;
+	if ( asValue.indexOf('Í') != -1 ) return true;
+	if ( asValue.indexOf('Ó') != -1 ) return true;
+	if ( asValue.indexOf('Ú') != -1 ) return true;
+	if ( asValue.indexOf('Ü') != -1 ) return true;
+	if ( asValue.indexOf('ü') != -1 ) return true;
+	return false;
+	}
+        
+//funcion: valida que el campo solo contega numeros, esto es cuando copian y pegan una cadena en un campo de tipo texto
+function f_validaSoloNumeros(cadena){
+    var regexp = new RegExp("([0-9,\u0020]+)");
+     if (!regexp.test(cadena)) {
+         return false;
+     }else{
+         return true;
+     }
+}
+
+//acepta letras con acento y números con especio en blanco
+var d = window.Event ? true : false;
+function f_aceptaLetrasAcentoYNumeros(evt){
+   var key = b ? evt.which : evt.keyCode;
+   if (key==undefined) return key;
+   return ((key >=32 && key<=32)  || (key >=65 && key <= 90) || (key>=97 && key<=122) || (key >= 48 && key <= 57) || (key==241) || (key==209) || (key==8) || (key==0) || (key==241) || (key==209) || (key==225) || (key==233) || (key==237) || (key==243) || (key==250) || (key==193) || (key==201) || (key==205) || (key==211) || (key==218) || (key == 46) || (key==252) || (key==220) || (key==8) || (key==0));
+}
+
+/* Funcion que valida que la direccion de correo sea correcta */
+function f_isEmailAddress(theElement){
+    var s = theElement.value;
+    //var filter=/^[A-Za-z][A-Za-z0-9_]*@[A-Za-z0-9_]+\.[A-Za-z0-9_.]+[A-za-z]$/;
+	var filter=/^[A-Za-z][A-Za-z0-9_.]*@([A-Za-z0-9_]+\.)+(gob)+\.(mx)$/;
+
+    if (s.length == 0 ) return true;
+    if (filter.test(s)) return true;
+    else
+        alert("Ingrese una dirección de correo válida, el correo debe ser Institucional");
+    	theElement.focus();
+    return false;
+}
+
+/* Funcion que valida que la direccion de correo sea correcta de la UNADM */
+function f_isEmailAddressUnadM(theElement){
+    var s = theElement.value;
+    //var filter=/^[A-Za-z][A-Za-z0-9_]*@[A-Za-z0-9_]+\.[A-Za-z0-9_.]+[A-za-z]$/;
+	var filter=/^[A-Za-z][A-Za-z0-9_.]*@(unadmexico)+\.(mx)$/;
+
+    if (s.length == 0 ) return true;
+    if (filter.test(s)) return true;
+    else
+        alert("Ingrese una dirección de correo válida, el correo debe ser Institucional");
+    	theElement.focus();
+    return false;
+}
+
+
+function ltrim(s) {   
+	return s.replace(/^\s+/, "");
+}
+
+function rtrim(s) {   
+	return s.replace(/\s+$/, "");
+}
+
+/* Función que quita espacios en blanco a la derecha de una cadena */
+function trim(s) {   
+	return rtrim(ltrim(s));
+}

@@ -1,0 +1,221 @@
+
+<!-- saved from url=(0065)http://siho.sep.gob.mx/siho2008//serdispatch?menu=101&operacion=0 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+
+<title>SARCyPH</title>
+<link href="./style_sedesol.css" rel="stylesheet">
+<link href="./style_sedesol(1).css" rel="stylesheet">
+<link rel="shortcut icon" href="http://siho.sep.gob.mx/siho2008//images/logoSep.ico" type="image/x-icon">
+<script type="text/javascript" src="./prototype.js.descarga"> </script>
+	<script type="text/javascript" src="./effects.js.descarga"> </script>
+	<script type="text/javascript" src="./window.js.descarga"> </script>
+	<script type="text/javascript" src="./debug.js.descarga"> </script>
+	<link href="./default.css" rel="stylesheet" type="text/css">
+	<link href="./themeSiho.css" rel="stylesheet" type="text/css">	
+	
+<script type="text/javascript" src="./engine.js.descarga"></script>
+<script type="text/javascript" src="./util.js.descarga"></script>
+<script type="text/javascript" src="./ObserverSessionAsyn.js.descarga"></script>
+<script>
+<!--
+var gsRutaSer = "http://siho.sep.gob.mx/siho2008/";
+var MiVentana;
+var idTimer;
+var giMinutos= 1;
+var giSegTimer = (60 * 1000 * giMinutos);
+var gboolExiste = false;
+var gPermisoEspecial = "";
+
+dwr.engine.setErrorHandler(function(){
+	alert("Servicio no disponible.\n\nPosiblemente el Sistema esta siendo reiniciado.\nEspere por favor.");
+});
+
+function f_initTimer(){
+    //alert("f_initTimer-");
+		//alert("id-'"+d170891e113c9878fe3cf3febcf9+"'");
+         idTimer = setInterval("ObserverSessionAsyn.getMensaje('d170891e113c9878fe3cf3febcf9',resultCallBack)",giSegTimer);
+}
+function f_consultaPermiso(){
+    //alert("f_consultaPermiso-");
+	//alert("id-'"+d170891e113c9878fe3cf3febcf9+"'");
+	ObserverSessionAsyn.getMensaje('d170891e113c9878fe3cf3febcf9',resultCallBack);
+}
+var resultCallBack = function(data){
+	if ( (data.mensaje == null) ){
+	 f_cliclLeido();
+	 gboolExiste=false;
+	}else{
+	f_visMensaje(data.mensaje,data.tpoMensaje);
+	gboolExiste=true;
+		if ( (data.permisoEspecial != null) ){
+			gPermisoEspecial = data.permisoEspecial;
+		}
+	return;
+	}
+	if (data.tpoMensaje == "SESS_FINALIZADA"){
+	    //alert(data.idSession+ " == d170891e113c9878fe3cf3febcf9  : "+ ( data.idSession == "d170891e113c9878fe3cf3febcf9" ));
+	    if ( data.idSession == "d170891e113c9878fe3cf3febcf9" ){
+			if (confirm('¡Tu sesión en el Sistema a finalizado!\n¿Desea volver a ingresar al sistema?')){
+					   f_MSalirDirecto();
+			 }
+		}
+	}
+	
+	
+}	
+function f_visMensaje(asMensaje, asTpoMensaje){
+	var lsImagen="";
+	if ( asTpoMensaje == "AVISO" ){
+		lsImagen = gsRutaSer+"/images/xeyes.png";
+	}
+	if ( asTpoMensaje == "ALERTA" ){
+		lsImagen = gsRutaSer+"/images/status_unknown.png";
+	}
+	if ( asTpoMensaje == "CONFIRMACIÓN" ){
+		lsImagen = gsRutaSer+"/images/clean64.png";
+	}
+	if ( asTpoMensaje == "USUARIO" ){
+		lsImagen = gsRutaSer+"/images/user_male.png";
+	}
+	$('imagenmensaje').src=lsImagen;
+	$('mensaje').update(asMensaje);
+	MiVentana.show();
+
+}
+function f_cliclLeido(){
+    if ( gboolExiste == true ){
+		MiVentana.close();
+		gboolExiste = false;
+	}
+	ObserverSessionAsyn.mensajeLeido("d170891e113c9878fe3cf3febcf9");
+
+}	
+function f_initWinMsg(){
+	MiVentana = new Window('MensajedelSIHO', {
+			className: "themeSiho",
+			top:-25, 
+			left:-5, 
+			zIndex:150, 
+			resizable:false, 
+			closable:false,
+			minimizable:false,
+			maximizable:false,
+			title: "Mensaje del SIHO",
+			width:(document.body.clientWidth),
+			height:57,
+			showEffect:Effect.BlindDown, hideEffect: Effect.SwitchOff
+			});
+        MiVentana.setContent("VisContenido");
+		f_initTimer();
+}
+//------------------------------------------------
+
+var liNuAccesos = 15;
+/**
+* Función encargada de realizar la llamada del cambio de password
+*/
+function f_llamaCambioPsw(){
+	if(liNuAccesos == 0){
+		parent.F_leftbody.window.location = "http://siho.sep.gob.mx/siho2008//serdispatch?menu=5&item=1&operacion=0";		
+}
+	return;
+}
+/**
+*Cierra la sesion del usuario y lo obliga a introducir password y usuario.
+*/
+function f_Salida(){
+	if(!confirm("Desea terminar la sesión de trabajo actual?")){
+	    return 0;    
+    }else{
+		parent.F_leftbody.window.location = "http://siho.sep.gob.mx/siho2008//serdispatch?menu=100&operacion=7";
+	  //return;
+	}//if
+	return 0;
+}
+function f_MSalirDirecto(){
+	parent.F_leftbody.window.location = "http://siho.sep.gob.mx/siho2008//serdispatch?menu=100&operacion=7";
+}
+/**
+*Lleva al menu principal
+*/
+function f_MenuPrincipal(){
+	if(liNuAccesos == 0){
+		alert("Debe de cambiar el password primero!");
+		return 0;
+	}
+	if(!confirm("Desea recargar el menù principal?")){
+	    return 0;
+    	
+    }else{
+		parent.F_leftbody.window.location = "http://siho.sep.gob.mx/siho2008//serdispatch?menu=100&operacion=0";
+	  //return;
+	}//if
+}//f_MenuPrincipal
+/*
+*muestra el menu principal
+*/
+function f_MPrincipal(){
+		parent.F_leftbody.window.location = "http://siho.sep.gob.mx/siho2008//serdispatch?menu=100&operacion=0";
+}//f_MPrincipal
+-->
+</script>
+<style type="text/css">
+<!--
+.Estilo5 {
+	font-family: Times New Roman;
+	color: #000000;
+}
+.Estilo6 {
+	font-size: 20px;
+	font-weight: bold;
+}
+-->
+</style>
+<script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script></head>
+<body onload="f_llamaCambioPsw();f_initWinMsg();" leftmargin="0" rightmargin="0" topmargin="0" marginheight="0"><div id="MensajedelSIHO" class="dialog" style="display: none; left: -5px; top: -25px; z-index: 150; width: 1390px; height: 100px;">      <table id="MensajedelSIHO_row1" class="top table_window">        <tbody><tr>          <td class="themeSiho_nw top_draggable"></td>          <td class="themeSiho_n"><div id="MensajedelSIHO_top" class="themeSiho_title title_window top_draggable">Mensaje del SIHO</div></td>          <td class="themeSiho_ne top_draggable"></td>        </tr>      </tbody></table>      <table id="MensajedelSIHO_row2" class="mid table_window">        <tbody><tr>          <td class="themeSiho_w"></td>            <td id="MensajedelSIHO_table_content" class="themeSiho_content" valign="top"><div id="MensajedelSIHO_content" class="themeSiho_content" style="height: 57px; width: 1366px;"><div id="VisContenido" style="">
+<table width="100%">
+  <tbody><tr>
+    <td width="9%"><img id="imagenmensaje" src="./clean64.png"></td>
+    <td width="85%"><div align="center"><div class="Estilo6" id="mensaje"></div>
+    </div></td>
+    <td width="6%"><input type="button" name="Submit" onclick="f_cliclLeido()" value="Leído"></td>
+  </tr>
+</tbody></table>
+
+</div></div></td>          <td class="themeSiho_e"></td>        </tr>      </tbody></table>        <table id="MensajedelSIHO_row3" class="bot table_window">        <tbody><tr>          <td class="themeSiho_sw bottom_draggable"></td>            <td class="themeSiho_s bottom_draggable"><div id="MensajedelSIHO_bottom" class="status_bar"><span style="float:left; width:1px; height:1px"></span></div></td>            <td class="themeSiho_se bottom_draggable"></td>        </tr>      </tbody></table>    </div>
+<form name="form1" method="post" action="http://siho.sep.gob.mx/siho2008//serdispatch">
+<input type="hidden" name="annioAplicacion" value="2024">
+  <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr class="lightblue2" valign="top"> 
+      <td width="33%" align="left"> <div align="left"> 
+          <table width="98%" border="0" cellspacing="0" hspace="0">
+            <tbody><tr valign="middle" class="lightblue2"> 
+              <th align="left"><img src="./logosep.png" width="86" height="57"></th>
+              <td><font size="2" class="subtitulo_centrado_negrita">Bienvenido(a):&nbsp;JESÚS EDUARDO                           </font></td>
+            </tr>
+          </tbody></table>
+        </div>
+      </td><td width="20%" align="center" valign="middle">
+	      <h1 class="Estilo5">SIHO 2024</h1>
+	      </td>
+      <td width="47%"><div align="right"> 
+          <table width="100%" border="0" cellspacing="0" height="100%">
+            <tbody><tr class="lightblue2"> 
+              <td width="53%" valign="top"> <div align="center"><font size="1">&nbsp;</font> 
+                </div>
+                <div align="left"><font size="2"><a href="http://siho.sep.gob.mx/siho2008//serdispatch?menu=101&amp;operacion=0#" onclick="f_MenuPrincipal();" title="Menu Principal">Menu 
+                  Principal</a> &nbsp;
+                  <a href="http://siho.sep.gob.mx/siho2008//serdispatch?menu=101&amp;operacion=0#" title="Salir" onclick="f_Salida();">Salir</a> </font> 
+                </div></td>
+              <th width="47%" align="right" valign="top"><img src="./derechaNegra.png" width="417" height="60"></th>
+            </tr>
+          </tbody></table>
+        </div></td></tr>
+  </tbody></table>
+</form>
+
+
+</body></html>
